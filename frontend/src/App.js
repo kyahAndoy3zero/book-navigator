@@ -27,13 +27,15 @@ function App() {
 
   const handleQueryBackend = async () => {
 
+    console.log(JSON.stringify({ url: userText }))
+
     if (userText.trim() === '') {
       toast.error('Please enter a valid input before querying the backend.');
       return;
     }
 
     try {
-      const response = await fetch('https://book-navigator.onrender.com/process-url', {
+      const response = await fetch('http://localhost:3000/process-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,6 +53,7 @@ function App() {
     <div class="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
       <div class="flex mb-4">
+
         <input
           class="mr-4 p-2 border rounded-lg w-96"
           type="text"
@@ -68,19 +71,23 @@ function App() {
       </div>
 
       {backendResponse && (
-        <div className="flex gap-2">
-          <div className="flex-1 w-1/2 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
+        <div className="flex">
+          <div className="flex-1 p-4 mt-4 max-w-60">
             <h2 className="text-lg font-semibold">Original Response:</h2>
-            <pre>
-              {JSON.stringify(backendResponse.originalResponse, null, 2)}
-            </pre>
+            <div className="scroll-container">
+              <pre className="scrollable-content">
+                {JSON.stringify(backendResponse.originalResponse, null, 2)}
+              </pre>
+            </div>
           </div>
 
-          <div className="flex-1 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
+          <div className="flex-1 p-4 mt-4 max-w-60">
             <h2 className="text-lg font-semibold">Processed Response:</h2>
-            <pre>
-              {JSON.stringify(backendResponse.processedResponse, null, 2)}
-            </pre>
+            <div className="scroll-container">
+              <pre className="scrollable-content">
+                {JSON.stringify(backendResponse.processedResponse, null, 2)}
+              </pre>
+            </div>
           </div>
         </div>
       )}
