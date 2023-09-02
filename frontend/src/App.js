@@ -69,7 +69,7 @@ function App() {
 
       {backendResponse && (
         <div className="flex gap-2">
-          <div className="flex-1 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
+          <div className="flex-1 w-1/2 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
             <h2 className="text-lg font-semibold">Original Response:</h2>
             <pre>
               {JSON.stringify(backendResponse.originalResponse, null, 2)}
