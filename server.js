@@ -1,10 +1,12 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
+const cors = require('cors')
 const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors());
 
 // Define a function to count 'e' and 'E' characters in a string
 const countCharacters = (input) => {
@@ -44,6 +46,7 @@ const processData = (jsonData) => {
 app.post('/process-url', async (req, res) => {
     try {
         const { url } = req.body;
+
 
         // Query the URL requested
         const response = await axios.get(url);
