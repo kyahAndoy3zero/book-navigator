@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [userText, setUserText] = useState('');
   const [pastUserTexts, setPastUserTexts] = useState([]);
 
   useEffect(() => {
-    // Load pastUserTexts from localStorage when the component mounts
+
     const storedTexts = JSON.parse(localStorage.getItem('pastUserTexts')) || [];
     setPastUserTexts(storedTexts);
   }, []);
@@ -14,19 +16,24 @@ function App() {
     const newText = e.target.value;
     setUserText(newText);
 
-    // Update pastUserTexts with the new text
     const updatedTexts = [newText, ...pastUserTexts.slice(0, 4)];
     setPastUserTexts(updatedTexts);
 
-    // Save pastUserTexts to localStorage
+
     localStorage.setItem('pastUserTexts', JSON.stringify(updatedTexts));
   };
 
   const [backendResponse, setBackendResponse] = useState(null);
 
   const handleQueryBackend = async () => {
+
+    if (userText.trim() === '') {
+      toast.error('Please enter a valid input before querying the backend.');
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:3000/process-url', {
+      const response = await fetch('https://book-navigator.onrender.com/process-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,6 +49,7 @@ function App() {
 
   return (
     <div class="flex flex-col items-center justify-center h-screen">
+      <ToastContainer />
       <div class="flex mb-4">
         <input
           class="mr-4 p-2 border rounded-lg w-96"
@@ -60,16 +68,16 @@ function App() {
       </div>
 
       {backendResponse && (
-        <div class="justify-center">
-          <div class="mt-4 p-4 bg-gray-200 rounded-lg overflow-x-auto max-h-60 w-1/2">
-            <h2 class="text-lg font-semibold">Original Response:</h2>
+        <div className="flex gap-2">
+          <div className="flex-1 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
+            <h2 className="text-lg font-semibold">Original Response:</h2>
             <pre>
               {JSON.stringify(backendResponse.originalResponse, null, 2)}
             </pre>
           </div>
 
-          <div class="mt-4 p-4 bg-gray-200 rounded-lg overflow-x-auto max-h-60 w-1/2">
-            <h2 class="text-lg font-semibold">Processed Response:</h2>
+          <div className="flex-1 p-4 mt-4 overflow-x-auto bg-gray-200 rounded-lg max-h-60">
+            <h2 className="text-lg font-semibold">Processed Response:</h2>
             <pre>
               {JSON.stringify(backendResponse.processedResponse, null, 2)}
             </pre>
