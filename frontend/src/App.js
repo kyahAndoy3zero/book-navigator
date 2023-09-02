@@ -41,22 +41,41 @@ function App() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Enter User-Editable Text"
-        value={userText}
-        onChange={handleInputChange}
-      />
+    <div class="flex flex-col items-center justify-center h-screen">
+      <div class="flex mb-4">
+        <input
+          class="mr-4 p-2 border rounded-lg w-96"
+          type="text"
+          placeholder="Enter User-Editable Text"
+          value={userText}
+          onChange={handleInputChange}
+        />
 
-      <button onClick={handleQueryBackend}>Query Backend</button>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+          onClick={handleQueryBackend}
+        >
+          Query Backend
+        </button>
+      </div>
+
       {backendResponse && (
-        <div>
-          <h2>Backend Response:</h2>
-          <pre>{JSON.stringify(backendResponse, null, 2)}</pre>
+        <div class="justify-center">
+          <div class="mt-4 p-4 bg-gray-200 rounded-lg overflow-x-auto max-h-60 w-1/2">
+            <h2 class="text-lg font-semibold">Original Response:</h2>
+            <pre>
+              {JSON.stringify(backendResponse.originalResponse, null, 2)}
+            </pre>
+          </div>
+
+          <div class="mt-4 p-4 bg-gray-200 rounded-lg overflow-x-auto max-h-60 w-1/2">
+            <h2 class="text-lg font-semibold">Processed Response:</h2>
+            <pre>
+              {JSON.stringify(backendResponse.processedResponse, null, 2)}
+            </pre>
+          </div>
         </div>
       )}
-      {/* Add other components here */}
     </div>
   );
 }
